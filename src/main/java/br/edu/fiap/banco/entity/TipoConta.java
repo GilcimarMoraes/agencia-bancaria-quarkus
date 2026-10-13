@@ -18,9 +18,6 @@ public record TipoConta( Long id, String nome ) {
         return new TipoConta( novoId, nome );
     }
 
-    public boolean nomeAlterado( String novoNome ) {
-        return !nome.equalsIgnoreCase( novoNome.trim() );
-    }
 }
 
 

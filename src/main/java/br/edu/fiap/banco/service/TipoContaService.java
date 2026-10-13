@@ -9,6 +9,8 @@ import br.edu.fiap.banco.repository.TipoContaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import java.util.List;
+
 @ApplicationScoped
 public class TipoContaService {
 
@@ -20,7 +22,7 @@ public class TipoContaService {
     }
 
     public TipoContaResponse cadastrar( TipoContaRequest request ) {
-        if( repository.existePorNomeIgnoreCase( request.nome() ) ) {
+        if( repository.existeByNomeIgnoreCase( request.nome() ) ) {
             throw new TipoContaJaCadastradaException();
         }
 
@@ -29,6 +31,7 @@ public class TipoContaService {
 
         return response;
     }
+
 
     public TipoContaResponse getTipoContaById( Long id ) {
         TipoConta tipoConta = repository.getTipoContaById( id )
@@ -43,7 +46,7 @@ public class TipoContaService {
         TipoConta tipo = repository.getTipoContaById( id )
                 .orElseThrow( TipoContaNaoEncontradaException::new );
 
-        if( tipo.nomeAlterado( request.nome() ) && repository.existePorNomeIgnoreCase( request.nome() ) ) {
+        if( repository.existeByNomeIgnoreCaseAndIdNot( request.nome(), id ) ) {
             throw new TipoContaJaCadastradaException();
         }
 
@@ -54,10 +57,23 @@ public class TipoContaService {
 
         return response;
     }
-    
+
     public void excluir( Long id ) {
-        if( !repository.excluir( id ) ) {
+        if( !repository.getTipoContaById( id ).isPresent() ) {
             throw new TipoContaNaoEncontradaException();
         }
+
+        repository.excluir( id );
+    }
+
+
+    public List<TipoContaResponse> listarTodos() {
+        List<TipoConta> lista = repository.listarTodos();
+
+        List<TipoContaResponse> response = lista.stream()
+                .map( TipoContaResponse::de )
+                .toList();
+
+        return response;
     }
 }

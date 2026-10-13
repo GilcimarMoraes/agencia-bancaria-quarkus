@@ -16,8 +16,9 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.net.URI;
+import java.util.List;
 
-@Path( "/api/tipo-conta" )
+@Path( "/api/tipos-conta" )
 @Consumes( MediaType.APPLICATION_JSON )
 @Produces( MediaType.APPLICATION_JSON )
 @Tag( name = "TiposConta" )
@@ -40,6 +41,13 @@ public class TipoContaResource implements GenericController {
         return Response.created( location )
                 .entity( response )
                 .build();
+    }
+
+    @GET
+    public List<TipoContaResponse> listarTodos() {
+        List<TipoContaResponse> lista = service.listarTodos();
+
+        return lista;
     }
 
     @GET

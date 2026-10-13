@@ -7,6 +7,8 @@ import jakarta.inject.Inject;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -20,7 +22,7 @@ public class TipoContaRepositoryImpl implements TipoContaRepository{
     }
 
     @Override
-    public boolean existePorNomeIgnoreCase(String nome) {
+    public boolean existeByNomeIgnoreCase(String nome) {
         String sql = "SELECT 1 FROM tipoConta WHERE UPPER(nome) = UPPER(?);";
 
         try (Connection connection = dataSource.getConnection();
@@ -31,6 +33,22 @@ public class TipoContaRepositoryImpl implements TipoContaRepository{
             }
         } catch ( SQLException ex ) {
             throw new IllegalStateException( "Falha ao consultar tipo de conta.", ex );
+        }
+    }
+
+    @Override
+    public boolean existeByNomeIgnoreCaseAndIdNot(String nome, Long id) {
+        String sql = "SELECT 1 FROM tipoConta WHERE UPPER(nome) = UPPER(?) AND id <> ?;";
+
+        try(Connection connection = dataSource.getConnection();
+        PreparedStatement stmt = connection.prepareStatement( sql ) ) {
+            stmt.setString( 1, nome );
+            stmt.setLong( 2, id );
+            try(ResultSet rs = stmt.executeQuery() ) {
+                return rs.next();
+            }
+        } catch ( SQLException ex ) {
+            throw new IllegalStateException( "Falha ao consultar o tipo de conta.", ex );
         }
     }
 
@@ -115,5 +133,23 @@ public class TipoContaRepositoryImpl implements TipoContaRepository{
             throw new IllegalStateException( "Falha ao excluir o tipo de conta", ex );
         }
 
+    }
+
+    @Override
+    public List<TipoConta> listarTodos() {
+        String sql = "SELECT id, nome FROM tipoConta ORDER BY nome;";
+        List<TipoConta> lista = new ArrayList<>();
+
+        try( Connection connection = dataSource.getConnection();
+        PreparedStatement stmt = connection.prepareStatement( sql );
+        ResultSet rs = stmt.executeQuery() ){
+            while ( rs.next() ) {
+                lista.add( new TipoConta( rs.getLong( "id" ), rs.getString( "nome" ) ) );
+            }
+        } catch ( SQLException ex ) {
+            throw new IllegalStateException( "Falha ao listar tipos de conta.", ex );
+        }
+
+        return lista;
     }
 }
