@@ -91,7 +91,7 @@ public class PessoaRepositoryImpl implements PessoaRepository{
         {
             statement.setString(1, pessoa.nome());
             statement.setString(2, pessoa.cpf());
-            statement.setString(1, pessoa.email());
+            statement.setString(3, pessoa.email());
 
             //O id ele vai no WHERE, não entra na lista de colunas alteradas.
             statement.setLong(4, pessoa.id());
