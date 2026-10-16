@@ -23,7 +23,7 @@ public class TipoContaRepositoryImpl implements TipoContaRepository{
 
     @Override
     public boolean existeByNomeIgnoreCase(String nome) {
-        String sql = "SELECT 1 FROM tipoConta WHERE UPPER(nome) = UPPER(?);";
+        String sql = "SELECT 1 FROM tipos_conta WHERE UPPER(nome) = UPPER(?);";
 
         try (Connection connection = dataSource.getConnection();
         PreparedStatement stmt = connection.prepareStatement( sql ) ){
@@ -38,7 +38,7 @@ public class TipoContaRepositoryImpl implements TipoContaRepository{
 
     @Override
     public boolean existeByNomeIgnoreCaseAndIdNot(String nome, Long id) {
-        String sql = "SELECT 1 FROM tipoConta WHERE UPPER(nome) = UPPER(?) AND id <> ?;";
+        String sql = "SELECT 1 FROM tipos_conta WHERE UPPER(nome) = UPPER(?) AND id <> ?;";
 
         try(Connection connection = dataSource.getConnection();
         PreparedStatement stmt = connection.prepareStatement( sql ) ) {
@@ -55,7 +55,7 @@ public class TipoContaRepositoryImpl implements TipoContaRepository{
     @Override
     public TipoConta salvar(TipoConta tipoConta) {
 
-        String sql = "INSERT INTO tipoConta (nome) VALUES (?);";
+        String sql = "INSERT INTO tipos_conta (nome) VALUES (?);";
 
         try( Connection connection = dataSource.getConnection();
         PreparedStatement stmt = connection.prepareStatement( sql, Statement.RETURN_GENERATED_KEYS) ) {
@@ -74,7 +74,7 @@ public class TipoContaRepositoryImpl implements TipoContaRepository{
 
     @Override
     public Optional<TipoConta> getTipoContaById(Long id) {
-        String sql = "SELECT id, nome FROM tipoConta WHERE id = ?;";
+        String sql = "SELECT id, nome FROM tipos_conta WHERE id = ?;";
 
         try( Connection connection = dataSource.getConnection();
         PreparedStatement stmt = connection.prepareStatement( sql ) ) {
@@ -99,7 +99,7 @@ public class TipoContaRepositoryImpl implements TipoContaRepository{
 
     @Override
     public TipoConta atualizar(TipoConta tipoConta) {
-        String sql = "UPDATE tipoConta SET nome = ? WHERE id = ?;";
+        String sql = "UPDATE tipos_conta SET nome = ? WHERE id = ?;";
 
         try(Connection connection = dataSource.getConnection();
         PreparedStatement stmt = connection.prepareStatement( sql ) ) {
@@ -121,7 +121,7 @@ public class TipoContaRepositoryImpl implements TipoContaRepository{
 
     @Override
     public boolean excluir(Long id) {
-        String sql = "DELETE FROM tipoConta WHERE id = ?;";
+        String sql = "DELETE FROM tipos_conta WHERE id = ?;";
 
         try( Connection connection = dataSource.getConnection();
         PreparedStatement stmt = connection.prepareStatement( sql )) {
@@ -137,7 +137,7 @@ public class TipoContaRepositoryImpl implements TipoContaRepository{
 
     @Override
     public List<TipoConta> listarTodos() {
-        String sql = "SELECT id, nome FROM tipoConta ORDER BY nome;";
+        String sql = "SELECT id, nome FROM tipos_conta ORDER BY nome;";
         List<TipoConta> lista = new ArrayList<>();
 
         try( Connection connection = dataSource.getConnection();

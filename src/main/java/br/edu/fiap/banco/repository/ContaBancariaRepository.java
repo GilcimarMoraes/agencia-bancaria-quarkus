@@ -17,5 +17,7 @@ public interface ContaBancariaRepository {
 
     List<ContaBancaria> listarPorTitular( Long titularId );
 
+    ContaBancaria atualizar( ContaBancaria conta );
+
     boolean encerrar( Long id );
 }

@@ -36,7 +36,7 @@ public class TipoContaResource implements GenericController {
     public Response cadastrar(@NotNull @Valid TipoContaRequest request, @Context UriInfo uriInfo ) {
         TipoContaResponse response = service.cadastrar( request );
 
-        URI location = gerarHeaderLocation( response.id(), uriInfo );
+        URI location = gerarHeaderLocation( response.id(), uriInfo, TipoContaResource.class );
 
         return Response.created( location )
                 .entity( response )

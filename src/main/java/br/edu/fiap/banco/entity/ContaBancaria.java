@@ -40,7 +40,7 @@ public record ContaBancaria(
     }
 
     //GETBYID
-    public static ContaBancaria comId( Long novoId ) {
+    public ContaBancaria comId( Long novoId ) {
         return new ContaBancaria( novoId, agencia, numero, saldo, ativa, titular, tipoConta );
     }
 
